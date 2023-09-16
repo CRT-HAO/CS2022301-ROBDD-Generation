@@ -37,3 +37,7 @@
 
 # macOS
 .DS_Store
+
+# Output
+output.dot
+output.png

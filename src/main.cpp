@@ -1,41 +1,68 @@
 #include "BDDManager.hpp"
+#include "PLAParser.hpp"
 
+#include <fstream>
 #include <iostream>
 
 using namespace std;
 
-int main() {
+void printUsage() { cout << "Usage: robdd [input] [output]" << endl; }
+
+int main(int argc, char *argv[]) {
+  if (argc < 2) {
+    printUsage();
+    return 1;
+  }
+
+  const char *input_file = argv[1];
+  const char *output_file = argv[2];
+
+  ifstream ifs;
+  ifs.open(input_file);
+  if (!ifs.is_open()) {
+    cout << "Error: Could not open input file " << input_file << endl;
+    return 1;
+  }
+
+  ofstream ofs;
+  ofs.open(output_file);
+  if (!ofs.is_open()) {
+    cout << "Error: Could not open output file " << output_file << endl;
+    return 1;
+  }
+
+  PLAParser parser;
+  parser.parse(ifs);
+  if (!parser.end) {
+    cout << "Error: Could not parse input file " << input_file << endl;
+    return 1;
+  }
+
   BDDManager bdd;
+  bdd.vars = parser.input_vars;
+  for (const auto &p : parser.product_terms) {
+    if (!p.second) {
+      // eg. 11- 0 <- we don't support the terms that sum is zero
+      cout << "Error: Find unsupported product terms sum" << endl;
+      return 1;
+    }
 
-  // // 11- 1
-  // // --1 1
-  // bdd.vars = {'a', 'b', 'c'};
-  // bdd.product_terms.push_back("11-");
-  // bdd.product_terms.push_back("--1");
+    bdd.product_terms.push_back(p.first);
+  }
 
-  // -110 1
-  // 01-- 1
-  // -001 1
-  // 1110 1
-  // 0-00 1
-  bdd.vars = {'a', 'b', 'c', 'd'};
-  bdd.product_terms.push_back("-110");
-  bdd.product_terms.push_back("01--");
-  bdd.product_terms.push_back("-001");
-  bdd.product_terms.push_back("1110");
-  bdd.product_terms.push_back("0-00");
-
+  // Build BDD Table
   bdd.buildTable();
-
-  // bdd.toDOT(cout);
-
+  cout << "= BDD ==============================" << endl;
   bdd.printTable(cout);
 
+  // To ROBDD
   BDDManager robdd = bdd.toROBDD();
-
   cout << "= ROBDD ============================" << endl;
+  robdd.printTable(cout);
+
+  cout << "== DOT =============================" << endl;
   robdd.toDOT(cout);
-  // robdd.printTable(cout);
+  robdd.toDOT(ofs);
 
   return 0;
 }

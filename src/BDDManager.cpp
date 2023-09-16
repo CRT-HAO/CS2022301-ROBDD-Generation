@@ -126,7 +126,7 @@ void BDDManager::toDOT(ostream &out) const {
 
   for (int i = 0; i < vars_num; i++) {
     index += POW_OF_TWO(i - 1);
-    out << "{rank=same";
+    out << '\t' << "{rank=same";
     for (int j = 0; j < POW_OF_TWO(i); j++) {
       if (this->table[index + j].thenEdge != -1)
         out << ' ' << index + j;
@@ -135,25 +135,26 @@ void BDDManager::toDOT(ostream &out) const {
   }
   out << endl;
 
-  out << "0[label=0 ,shape=box]" << endl << "1[label=1 ,shape=box]" << endl;
+  out << '\t' << "0[label=0 ,shape=box]" << endl
+      << '\t' << "1[label=1 ,shape=box]" << endl;
   for (int i = 0; i < this->table.size(); i++) {
     if (this->table[i].thenEdge != -1)
-      out << i << "[label=\"" << this->table[i].var << "\"]" << endl;
+      out << '\t' << i << "[label=\"" << this->table[i].var << "\"]" << endl;
   }
   out << endl;
 
   for (int i = 0; i < this->table.size(); i++) {
     if (this->table[i].thenEdge != -1)
-      out << i << "->" << this->table[i].thenEdge << "[label=\"1\",style=solid]"
-          << endl
-          << i << "->" << this->table[i].elseEdge
+      out << '\t' << i << "->" << this->table[i].thenEdge
+          << "[label=\"1\",style=solid]" << endl
+          << '\t' << i << "->" << this->table[i].elseEdge
           << "[label=\"0\",style=dotted]" << endl;
   }
   out << "}" << endl;
 }
 
 void BDDManager::printTable(std::ostream &out) const {
-  out << "= Table ============================" << endl;
+  out << "== Table ===========================" << endl;
   out << "#\tvar\telse\tthen" << endl;
   size_t i = 0;
   for (const auto &node : this->table) {
