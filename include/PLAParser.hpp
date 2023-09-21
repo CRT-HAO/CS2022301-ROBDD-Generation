@@ -11,7 +11,7 @@ public:
   std::vector<char> input_vars;
   std::vector<char> output_vars;
   int product_terms_num{0};
-  std::vector<std::pair<std::string, bool>> product_terms;
+  std::vector<std::pair<std::string, char>> product_terms;
   bool end{false};
 
 public:

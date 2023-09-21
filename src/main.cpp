@@ -41,8 +41,9 @@ int main(int argc, char *argv[]) {
   BDDManager bdd;
   bdd.vars = parser.input_vars;
   for (const auto &p : parser.product_terms) {
-    if (!p.second) {
-      // eg. `11- 0` <- we don't support the terms that sum is zero
+    if (p.second != '1') {
+      // eg. `11- 0` <- we don't support the terms that sum is zero or dont't
+      // care
       cout << "Error: Find unsupported product terms sum" << endl;
       return 1;
     }

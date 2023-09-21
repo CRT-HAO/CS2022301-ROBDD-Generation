@@ -37,28 +37,41 @@ void PLAParser::parse(istream &in) {
         this->output_vars.push_back(var);
       }
     } else if (command == ".p") {
+      // eg. `.p 4`
+      // we don't support .p command anymore
+    } else if (command[0] == '1' || command[0] == '0' || command[0] == '-') {
       // eg.
-      // `.p 2
       // 1-1 1
       // -11 1`
-      int n;
-      ss >> n;
-      this->product_terms.clear();
-      size_t i = 0;
-      for (string p_line; i < n && getline(in, p_line) && !in.eof(); ++i) {
-        stringstream p_ss(p_line);
+      string product_terms = command;
+      char sum;
+      ss >> sum;
+      this->product_terms.push_back(pair<string, char>(product_terms, sum));
 
-        string product_terms;
-        p_ss >> product_terms;
+      // rewrote product terms parse logic
+      // } else if (command == ".p") {
+      //   // eg.
+      //   // `.p 2
+      //   // 1-1 1
+      //   // -11 1`
+      //   int n;
+      //   ss >> n;
+      //   this->product_terms.clear();
+      //   size_t i = 0;
+      //   for (string p_line; i < n && getline(in, p_line) && !in.eof(); ++i) {
+      //     stringstream p_ss(p_line);
 
-        char sum;
-        p_ss >> sum;
+      //     string product_terms;
+      //     p_ss >> product_terms;
 
-        bool sum_bool = (CHAR_TO_NUM(sum) > 0 ? true : false);
+      //     char sum;
+      //     p_ss >> sum;
 
-        this->product_terms.push_back(
-            pair<string, bool>(product_terms, sum_bool));
-      }
+      //     bool sum_bool = (CHAR_TO_NUM(sum) > 0 ? true : false);
+
+      //     this->product_terms.push_back(
+      //         pair<string, bool>(product_terms, sum_bool));
+      //   }
     } else if (command == ".e") {
       // eg. `.e`
       this->end = true;
