@@ -135,8 +135,8 @@ void BDDManager::toDOT(ostream &out) const {
   }
   out << endl;
 
-  out << '\t' << "0[label=0 ,shape=box]" << endl
-      << '\t' << "1[label=1 ,shape=box]" << endl;
+  out << '\t' << "0[label=0, shape=box]" << endl
+      << '\t' << "1[label=1, shape=box]" << endl;
   for (int i = 0; i < this->table.size(); i++) {
     if (this->table[i].thenEdge != -1)
       out << '\t' << i << "[label=\"" << this->table[i].var << "\"]" << endl;
@@ -146,9 +146,9 @@ void BDDManager::toDOT(ostream &out) const {
   for (int i = 0; i < this->table.size(); i++) {
     if (this->table[i].thenEdge != -1)
       out << '\t' << i << "->" << this->table[i].thenEdge
-          << "[label=\"1\",style=solid]" << endl
+          << "[label=\"1\", style=solid]" << endl
           << '\t' << i << "->" << this->table[i].elseEdge
-          << "[label=\"0\",style=dotted]" << endl;
+          << "[label=\"0\", style=dotted]" << endl;
   }
   out << "}" << endl;
 }
