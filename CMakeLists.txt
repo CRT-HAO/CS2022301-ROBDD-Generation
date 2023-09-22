@@ -10,5 +10,5 @@ set(INCLUDE_DIR include())
 
 add_executable(${APP_NAME} ${SRC_DIR}/BDDManager.cpp
   ${SRC_DIR}/PLAParser.cpp
-  ${SRC_DIR}/main.cpp)
+  ${SRC_DIR}/B11030202.cpp)
 target_include_directories(${APP_NAME} PRIVATE ${INCLUDE_DIR})
