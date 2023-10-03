@@ -19,7 +19,7 @@ cmake --build .
 
 ## Test Platform
 
-![Screenshot 2023-09-21 at 7.39.03 PM](./assets/Screenshot 2023-09-21 at 7.39.03 PM.png)
+![neofetch](./assets/neofetch.png)
 
 ### macOS
 
